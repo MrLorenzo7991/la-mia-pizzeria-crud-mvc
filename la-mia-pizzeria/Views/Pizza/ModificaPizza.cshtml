@@ -1,0 +1,40 @@
+﻿@model Pizza
+
+<div class="container">
+    <div class="row">
+        <div class="col text-white">
+            <h3 class="d-flex align-items-center text-white">Modifica Pizza</h3>
+            <form asp-action="ModificaPizza" asp-controller="Pizza" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <strong>Immagine:</strong>
+                    <input asp-for="image" class="d-block w-100" />
+                    <span asp-validation-for="image" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Nome Pizza:</strong>
+                    <input asp-for="Name" class="d-block w-100" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Prezzo:</strong>
+                    <input asp-for="prezzo" class="d-block w-100" type="number"/>
+                    <span asp-validation-for="prezzo" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Descrizione:</strong>
+                    <textarea asp-for="Description" rows="2" class="d-block w-100"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Ingredienti:</strong>
+                    <textarea asp-for="Ingredienti" rows="2" class="d-block w-100"></textarea>
+                    <span asp-validation-for="Ingredienti" class="text-danger"></span>
+                </div
+                <div class="text-end">
+                    <input type="submit" class="btn btn-small btn-success" value="Salva">
+                </div>
+             </form>
+        </div>   
+    </div>
+</div>

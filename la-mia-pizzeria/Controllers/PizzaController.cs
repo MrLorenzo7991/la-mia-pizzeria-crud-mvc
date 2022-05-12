@@ -15,15 +15,7 @@ namespace la_mia_pizzeria.Controllers
         [HttpGet]
         public IActionResult DettaglioPizza(int id)
         {
-            Pizza pizzaTrovata = null;
-            foreach(Pizza pizza in PizzaData.GetPizze())
-            {
-                if(pizza.Id == id)
-                {
-                    pizzaTrovata = pizza;
-                    break;
-                }
-            }
+            Pizza pizzaTrovata = TrovaPizzaConId(id);
 
             if (pizzaTrovata == null)
             {
@@ -56,6 +48,65 @@ namespace la_mia_pizzeria.Controllers
             PizzaData.GetPizze().Add(pizzaDaAggiungere);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult ModificaPizza(int id)
+        {
+            Pizza pizzaDaModificare = TrovaPizzaConId(id);
+            if (pizzaDaModificare == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View("ModificaPizza", pizzaDaModificare);
+            }
+            
+        }
+        [HttpPost]
+        public IActionResult ModificaPizza(int id, Pizza model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ModificaPizza", model);
+            }
+
+            Pizza pizzaDaModificare = TrovaPizzaConId(id);
+
+            if(pizzaDaModificare != null)
+            {
+                pizzaDaModificare.Name = model.Name;
+                pizzaDaModificare.Description = model.Description;
+                pizzaDaModificare.prezzo = model.prezzo;
+                pizzaDaModificare.Ingredienti=model.Ingredienti;
+                pizzaDaModificare.image = model.image;
+                return RedirectToAction("index");
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        
+        
+        
+        
+        
+        
+        //metodo//
+        private Pizza TrovaPizzaConId(int id)
+        {
+            Pizza pizzaTrovata = null;
+            foreach (Pizza pizza in PizzaData.GetPizze())
+            {
+                if (pizza.Id == id)
+                {
+                    pizzaTrovata = pizza;
+                    break;
+                }
+            }
+            return pizzaTrovata;
         }
     }
 }

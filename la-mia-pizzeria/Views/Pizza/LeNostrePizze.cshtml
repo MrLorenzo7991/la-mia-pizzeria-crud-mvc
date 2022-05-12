@@ -21,7 +21,8 @@
                   <p class="float-end fst-italic">@pizza.prezzo €</p>
                   <p class="card-text"><span>@pizza.Description</span></p>
                   <div class="card-footer text-center">
-                    <a class="btn btn-success text-center" href="@Url.Action("DettaglioPizza", "Pizza", new { id = pizza.Id })">Vedi Dettagli Pizza</a>
+                    <a class="btn btn-success text-center mb-1" href="@Url.Action("DettaglioPizza", "Pizza", new { id = pizza.Id })">Vedi Dettagli Pizza</a>
+                    <a class="btn btn-success text-center" href="@Url.Action("ModificaPizza", "Pizza", new { id = pizza.Id })">Modifica Pizza</a>
                   </div>
                 </div>
               </div>
