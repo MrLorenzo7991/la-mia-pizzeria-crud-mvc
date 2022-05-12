@@ -88,6 +88,29 @@ namespace la_mia_pizzeria.Controllers
                 return NotFound();
             }
         }
+        [HttpPost]
+        public IActionResult EliminaPizza(int id)
+        {
+            int IndicePizzaDaRimuovere = -1;
+            List<Pizza> listaPizze = PizzaData.GetPizze();
+            foreach(Pizza pizza in listaPizze)
+            {
+                if (pizza.Id == id)
+                {
+                    IndicePizzaDaRimuovere = id;
+                }
+            }
+            if (IndicePizzaDaRimuovere > -1)
+            {
+                PizzaData.GetPizze().RemoveAt(IndicePizzaDaRimuovere);
+                return RedirectToAction("index");
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
         
         
         
