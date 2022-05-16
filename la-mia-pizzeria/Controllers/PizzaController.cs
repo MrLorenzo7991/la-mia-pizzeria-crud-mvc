@@ -1,27 +1,29 @@
-﻿using la_mia_pizzeria.Models;
-using la_mia_pizzeria.Utils;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using NuovaPizzeria.Models;
+using NuovaPizzeria.SimulazioneDB;
 
-namespace la_mia_pizzeria.Controllers
+namespace NuovaPizzeria.Controllers
 {
     public class PizzaController : Controller
     {
         [HttpGet]
         public IActionResult Index()
         {
-            List<Pizza> pizzaList = PizzaData.GetPizze();
-            return View("LeNostrePizze", pizzaList);
+            List<Pizza> listaPizze = DatiPizze.GetPizze();
+            return View("IlMenu", listaPizze);      //devo inserire il database(Per ora lo simulo)
         }
         [HttpGet]
-        public IActionResult DettaglioPizza(int id)
+        public IActionResult DettagliPizza(int id)
         {
-            Pizza pizzaTrovata = TrovaPizzaConId(id);
-
-            if (pizzaTrovata == null)
+            Pizza pizzaTrovata = new Pizza();
+            foreach(Pizza pizza in DatiPizze.GetPizze())
             {
-                return View("Error");
+                if (id == pizza.Id)
+                {
+                    pizzaTrovata = pizza;
+                }
             }
-            return View(pizzaTrovata);
+            return View("DettagliPizza", pizzaTrovata);
         }
         [HttpGet]
         public IActionResult AggiungiPizza()
@@ -29,78 +31,56 @@ namespace la_mia_pizzeria.Controllers
             return View("AggiungiPizza");
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AggiungiPizza(Pizza nuovaPizza)    //qua forse vuole gli ingredienti direttamente in lista
+        [AutoValidateAntiforgeryToken]
+        public IActionResult AggiungiPizza(Pizza nuovaPizza)
         {
             if (!ModelState.IsValid)
             {
                 return View("AggiungiPizza", nuovaPizza);
             }
-            //gli ingredienti sono inseriti in stringa separati da ;
-            /*List<string> ingredienti = new List<string>();
-            string[] ingredientiStringa = nuovaPizza.Ingredienti.ToString().Split(';');
-            foreach (string ingrediente in ingredientiStringa)
-            {
-                ingredienti.Add(ingrediente);
-            }*/
-
-            Pizza pizzaDaAggiungere = new Pizza(PizzaData.GetPizze().Count, nuovaPizza.Name, nuovaPizza.Description, nuovaPizza.prezzo, nuovaPizza.image, nuovaPizza.Ingredienti);
-            PizzaData.GetPizze().Add(pizzaDaAggiungere);
-
+            Pizza pizzaDaAggiungere = new Pizza(DatiPizze.GetPizze().Count, nuovaPizza.UrlImmagine, nuovaPizza.Nome, nuovaPizza.Descrizione, nuovaPizza.Ingredienti, nuovaPizza.Prezzo);
+            DatiPizze.GetPizze().Add(pizzaDaAggiungere);
             return RedirectToAction("Index");
         }
-
         [HttpGet]
         public IActionResult ModificaPizza(int id)
         {
             Pizza pizzaDaModificare = TrovaPizzaConId(id);
-            if (pizzaDaModificare == null)
-            {
-                return NotFound();
-            }
-            else
+            if(pizzaDaModificare != null)
             {
                 return View("ModificaPizza", pizzaDaModificare);
             }
-            
+            return NotFound();
         }
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult ModificaPizza(int id, Pizza model)
         {
             if (!ModelState.IsValid)
             {
                 return View("ModificaPizza", model);
             }
-
             Pizza pizzaDaModificare = TrovaPizzaConId(id);
-
             if(pizzaDaModificare != null)
             {
-                pizzaDaModificare.Name = model.Name;
-                pizzaDaModificare.Description = model.Description;
-                pizzaDaModificare.prezzo = model.prezzo;
-                pizzaDaModificare.Ingredienti=model.Ingredienti;
-                pizzaDaModificare.image = model.image;
-                return RedirectToAction("index");
+                pizzaDaModificare.Nome = model.Nome;
+                pizzaDaModificare.UrlImmagine = model.UrlImmagine;
+                pizzaDaModificare.Prezzo = model.Prezzo;
+                pizzaDaModificare.Ingredienti = model.Ingredienti;
+                pizzaDaModificare.Descrizione = model.Descrizione;
+                return RedirectToAction("Index");
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
+
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult EliminaPizza(int id)
         {
             int IndicePizzaDaRimuovere = -1;
-            List<Pizza> listaPizze = PizzaData.GetPizze();
-            /*foreach(Pizza pizza in listaPizze)
-            {
-                if (pizza.Id == id)
-                {
-                    IndicePizzaDaRimuovere = id;
-                }
-            }*/
-            for(int i = 0; i < listaPizze.Count; i++)
+            List<Pizza> listaPizze = DatiPizze.GetPizze();
+            
+            for (int i = 0; i < listaPizze.Count(); i++)
             {
                 if (listaPizze[i].Id == id)
                 {
@@ -109,34 +89,31 @@ namespace la_mia_pizzeria.Controllers
             }
             if (IndicePizzaDaRimuovere > -1)
             {
-                PizzaData.GetPizze().RemoveAt(IndicePizzaDaRimuovere);
+                DatiPizze.GetPizze().RemoveAt(IndicePizzaDaRimuovere);
                 return RedirectToAction("index");
             }
             else
             {
                 return NotFound();
             }
-
         }
-        
-        
-        
-        
-        
-        
-        //metodo//
+
+
+
+
         private Pizza TrovaPizzaConId(int id)
         {
             Pizza pizzaTrovata = null;
-            foreach (Pizza pizza in PizzaData.GetPizze())
+            foreach (Pizza pizza in DatiPizze.GetPizze())
             {
                 if (pizza.Id == id)
                 {
                     pizzaTrovata = pizza;
-                    break;
                 }
             }
             return pizzaTrovata;
         }
+            
+
     }
 }

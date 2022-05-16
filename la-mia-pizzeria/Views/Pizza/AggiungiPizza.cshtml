@@ -1,40 +1,44 @@
 ﻿@model Pizza
 
-<div class="container">
+<div class="container my-5 shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="row mt-2 mb-4">
+        <div class="col">
+            <h1 class="fst-italic text-center">Aggiungi una nuova pizza</h1>
+        </div>
+    </div>
     <div class="row">
-        <div class="col text-white">
-            <h3 class="d-flex align-items-center text-white">Aggiungi una nuova pizza</h3>
-            <form action="@Url.Action("AggiungiPizza", "Pizza")" method="post">
+        <div class="col-lg-6 col-md-9 col-12 mx-auto">
+            <form asp-action="AggiungiPizza" asp-controller="Pizza" method="post" class="row">
                 @Html.AntiForgeryToken()
-                <div class="mb-3">
-                    <strong>Immagine:</strong>
-                    <input asp-for="image" class="d-block w-100" />
-                    <span asp-validation-for="image" class="text-danger"></span>
+                <div class="col-md-9 my-2">
+                    <span>Nome pizza:</span>
+                    <input type="text" class="form-control" asp-for="Nome"/>
+                    <span asp-validation-for="Nome" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
-                    <strong>Nome Pizza:</strong>
-                    <input asp-for="Name" class="d-block w-100" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                <div class="col-md-3 my-2">
+                    <span>Prezzo pizza:</span>
+                    <input type="number" class="form-control" asp-for="Prezzo" step="0.01" min="0"/>
+                    <span asp-validation-for="Prezzo" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
-                    <strong>Prezzo:</strong>
-                    <input asp-for="prezzo" class="d-block w-100" type="number"/>
-                    <span asp-validation-for="prezzo" class="text-danger"></span>
+                <div class="col-12 my-2">
+                    <span>Url Immagine Pizza:</span>
+                    <input type="url" class="form-control" asp-for="UrlImmagine"/>
+                    <span asp-validation-for="UrlImmagine" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
-                    <strong>Descrizione:</strong>
-                    <textarea asp-for="Description" rows="2" class="d-block w-100"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="col-12 my-2">
+                    <span>Descrizione Pizza:</span>
+                    <input type="text" class="form-control" asp-for="Descrizione"/>
+                    <span asp-validation-for="Descrizione" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
-                    <strong>Ingredienti:</strong>
-                    <textarea asp-for="Ingredienti" rows="2" class="d-block w-100"></textarea>
+                <div class="col-12 my-2">
+                    <span>Ingredienti Pizza:</span>
+                    <input type="text" class="form-control" asp-for="Ingredienti"/>
                     <span asp-validation-for="Ingredienti" class="text-danger"></span>
-                </div
-                <div class="text-end">
-                    <input type="submit" class="btn btn-small btn-success" value="Salva">
                 </div>
-             </form>
-        </div>   
+                <div class="text-end my-2">
+                    <input type="submit" class="btn btn-small btn-success" value="Aggiungi">
+                </div>
+            </form>
+        </div>
     </div>
 </div>

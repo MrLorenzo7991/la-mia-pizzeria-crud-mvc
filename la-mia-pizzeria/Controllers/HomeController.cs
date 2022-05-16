@@ -1,8 +1,8 @@
-﻿using la_mia_pizzeria.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using NuovaPizzeria.Models;
 using System.Diagnostics;
 
-namespace la_mia_pizzeria.Controllers
+namespace NuovaPizzeria.Controllers
 {
     public class HomeController : Controller
     {
@@ -22,21 +22,6 @@ namespace la_mia_pizzeria.Controllers
         {
             return View();
         }
-
-        public IActionResult ChiSiamo()
-        {
-            return View();
-        }
-
-        public IActionResult LaLocation()
-        {
-            return View();
-        }
-        public IActionResult PrenotaOra()
-        {
-            return View();
-        }
-       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

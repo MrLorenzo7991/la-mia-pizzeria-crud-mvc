@@ -1,0 +1,56 @@
+﻿@model List<Pizza>
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center my-2">
+            <h2><em>Le nostre pizze</em></h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center my-2">
+            <p>Ogni pizza è curata nei minimi dettagli e realizzata solo con ingredienti freschi di primissima qualità</p>
+        </div>
+    </div>
+    @if(Model.Count() == 0)
+    {
+        <h2 class="text-center">Non sono presenti pizze</h2>
+    }
+    <div class="row">
+        @foreach(Pizza pizza in Model)
+        {
+            <div class="col mb-2">
+                <div class="card h-100 mx-auto shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
+                  <img src="@pizza.UrlImmagine" class="card-img-top" style="width: 100%; height: 210px;object-fit: cover;" alt="Immagine pizza">
+                  <div class="card-body">
+                    <p class="card-text"><span class="fs-5 fw-bold">@pizza.Nome</span><span class="fs-5 float-end">@pizza.Prezzo<!--.ToString(/*Vedere come fare*/)--> &euro;</span><br /><span class="text-center">@pizza.Descrizione</span></p>
+                    <p class="card-text fst-italic text-center">@pizza.Ingredienti</p>
+                    <p class="text-center mb-0"><a href="@Url.Action("DettagliPizza","Pizza")">vedi dettagli</a></p>
+                  </div>
+                  <div class="card-footer">
+                      <div class="row mx-auto">
+                        <div class="col-4">
+                            <a class="btn btn-primary mx-auto h-100 w-100" href="#"><i class="gg-shopping-cart mx-auto"></i></a>
+                        </div>
+                        <div class="col-4">
+                            <a class="btn btn-warning mx-auto h-100 w-100" href="@Url.Action("ModificaPizza", "Pizza")"><i class="gg-pen mx-auto mt-2"></i></a>
+                        </div>
+                        <div class="col-4">
+                            <form action="@Url.Action("EliminaPizza", "Pizza", new { Id = pizza.Id })" method="post">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-danger mx-auto h-100 w-100" type="submit"><i class="gg-trash mx-auto my-1"></i></button>
+                            </form>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="col mx-auto my-5 position-relative">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <a type="button" class="btn btn-outline-dark " href="@Url.Action("AggiungiPizza","Pizza")">+ Aggiungi pizza</a>
+            </div>
+        </div>
+    </div>
+</div>
