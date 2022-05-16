@@ -5,6 +5,7 @@ namespace NuovaPizzeria.Models
 {
     public class Pizza
     {
+        [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "Il campo è obbligatorio")]
         [Url(ErrorMessage = "Devi inserire un URL")]
@@ -25,9 +26,8 @@ namespace NuovaPizzeria.Models
         {
 
         }
-        public Pizza(int Id, string UrlImmagine,string Nome, string Descrizione, string Ingredienti, double Prezzo)
+        public Pizza(string UrlImmagine,string Nome, string Descrizione, string Ingredienti, double Prezzo)
         {
-            this.Id = Id;
             this.UrlImmagine = UrlImmagine;
             this.Nome = Nome;
             this.Descrizione = Descrizione;

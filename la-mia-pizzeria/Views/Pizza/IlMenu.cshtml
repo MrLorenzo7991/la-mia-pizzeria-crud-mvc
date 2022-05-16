@@ -24,7 +24,7 @@
                   <div class="card-body">
                     <p class="card-text"><span class="fs-5 fw-bold">@pizza.Nome</span><span class="fs-5 float-end">@pizza.Prezzo<!--.ToString(/*Vedere come fare*/)--> &euro;</span><br /><span class="text-center">@pizza.Descrizione</span></p>
                     <p class="card-text fst-italic text-center">@pizza.Ingredienti</p>
-                    <p class="text-center mb-0"><a href="@Url.Action("DettagliPizza","Pizza")">vedi dettagli</a></p>
+                    <p class="text-center mb-0"><a href="@Url.Action("DettagliPizza","Pizza", new { id = pizza.Id })">vedi dettagli</a></p>
                   </div>
                   <div class="card-footer">
                       <div class="row mx-auto">
