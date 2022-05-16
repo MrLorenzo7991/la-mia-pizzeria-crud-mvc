@@ -93,11 +93,18 @@ namespace la_mia_pizzeria.Controllers
         {
             int IndicePizzaDaRimuovere = -1;
             List<Pizza> listaPizze = PizzaData.GetPizze();
-            foreach(Pizza pizza in listaPizze)
+            /*foreach(Pizza pizza in listaPizze)
             {
                 if (pizza.Id == id)
                 {
                     IndicePizzaDaRimuovere = id;
+                }
+            }*/
+            for(int i = 0; i < listaPizze.Count; i++)
+            {
+                if (listaPizze[i].Id == id)
+                {
+                    IndicePizzaDaRimuovere = i;
                 }
             }
             if (IndicePizzaDaRimuovere > -1)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using la_mia_pizzeria.Utils.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace la_mia_pizzeria.Models
 {
@@ -15,6 +16,7 @@ namespace la_mia_pizzeria.Models
         [Url(ErrorMessage = "Il campo deve essere un Url di un immagine")]
         public string image { get; set; }
         [Required(ErrorMessage ="Il campo è obbligatorio")]
+        [NumeroMaggioreDi0ValidationAttribute]
         public int prezzo { get; set; }                   
         [Required(ErrorMessage = "Il campo è obbligatorio")]
         public string Ingredienti { get; set; } 
