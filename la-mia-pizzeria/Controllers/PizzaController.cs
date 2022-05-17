@@ -10,12 +10,12 @@ namespace NuovaPizzeria.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List <Pizza> listaPizze = new List<Pizza>();
+            List<Pizza> listaPizze = new List<Pizza>();
             using (PizzaContext db = new PizzaContext())
             {
                 listaPizze = db.Pizze.ToList();
             }
-            return View("IlMenu", listaPizze);      
+            return View("IlMenu", listaPizze);
         }
         [HttpGet]
         public IActionResult DettagliPizza(int id)
@@ -50,7 +50,7 @@ namespace NuovaPizzeria.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult AggiungiPizza(Pizza nuovaPizza)
         {
-            using(PizzaContext db = new PizzaContext())
+            using (PizzaContext db = new PizzaContext())
             {
                 if (!ModelState.IsValid)
                 {
@@ -62,23 +62,19 @@ namespace NuovaPizzeria.Controllers
             }
             return RedirectToAction("Index");
         }
-        /*
+
         [HttpGet]
         public IActionResult ModificaPizza(int id)
         {
-            Pizza pizzaDaModificare = TrovaPizzaConId(id);
-            if (pizzaDaModificare != null)
-            {
-                return View("ModificaPizza", pizzaDaModificare);
-            }
-            return NotFound();
-            /*Pizza pizzaDaModificare = null;
+
+            Pizza? pizzaDaModificare = null;
             using (PizzaContext db = new PizzaContext())
             {
-                pizzaDaModificare = db.Pizze.Where(pizza => pizza.Id == id).First();
+                pizzaDaModificare = db.Pizze
+                         .Where(post => post.Id == id)
+                         .FirstOrDefault();
             }
-
-            if(pizzaDaModificare != null)
+            if (pizzaDaModificare != null)
             {
                 return View("ModificaPizza", pizzaDaModificare);
             }
@@ -92,7 +88,11 @@ namespace NuovaPizzeria.Controllers
             {
                 return View("ModificaPizza", model);
             }
-            Pizza pizzaDaModificare = TrovaPizzaConId(id);
+            using(PizzaContext db =new PizzaContext())
+            {
+            Pizza? pizzaDaModificare = db.Pizze
+                         .Where(post => post.Id == id)
+                         .FirstOrDefault();
             if(pizzaDaModificare != null)
             {
                 pizzaDaModificare.Nome = model.Nome;
@@ -100,49 +100,29 @@ namespace NuovaPizzeria.Controllers
                 pizzaDaModificare.Prezzo = model.Prezzo;
                 pizzaDaModificare.Ingredienti = model.Ingredienti;
                 pizzaDaModificare.Descrizione = model.Descrizione;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return NotFound();
+            }
         }
         
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public IActionResult EliminaPizza(int id)
         {
-            int IndicePizzaDaRimuovere = -1;
-            //List<Pizza> listaPizze = DatiPizze.GetPizze();
-        
-            for (int i = 0; i < listaPizze.Count(); i++)
+            using(PizzaContext db =new PizzaContext())
             {
-                if (listaPizze[i].Id == id)
+                Pizza pizzaDaEliminare = db.Pizze.Where(post => post.Id == id).FirstOrDefault();
+                if(pizzaDaEliminare != null)
                 {
-                    IndicePizzaDaRimuovere = i;
+                    db.Pizze.Remove(pizzaDaEliminare);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
             }
-            if (IndicePizzaDaRimuovere > -1)
-            {
-                //DatiPizze.GetPizze().RemoveAt(IndicePizzaDaRimuovere);
-                return RedirectToAction("index");
-            }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
-
-
-
-
-        private Pizza TrovaPizzaConId(int id)
-        {
-            Pizza pizzaTrovata = null;
-            using(PizzaContext db = new PizzaContext())
-            {
-                pizzaTrovata = db.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
-                
-            }
-            return pizzaTrovata;
-        }
-        */
+        
     }
 }

@@ -31,8 +31,8 @@
                         <div class="col-4">
                             <a class="btn btn-primary mx-auto h-100 w-100" href="#"><i class="gg-shopping-cart mx-auto"></i></a>
                         </div>
-                        <div class="col-4">
-                            <a class="btn btn-warning mx-auto h-100 w-100" href="@Url.Action("ModificaPizza", "Pizza")"><i class="gg-pen mx-auto mt-2"></i></a>
+                        <div class="col-4">                            
+                            <a class="btn btn-warning mx-auto h-100 w-100" href="@Url.Action("ModificaPizza", "Pizza",  new { id = pizza.Id })"><i class="gg-pen mx-auto mt-2"></i></a>
                         </div>
                         <div class="col-4">
                             <form action="@Url.Action("EliminaPizza", "Pizza", new { Id = pizza.Id })" method="post">
