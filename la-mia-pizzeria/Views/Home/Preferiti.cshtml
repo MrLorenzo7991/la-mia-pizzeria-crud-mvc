@@ -1,26 +1,8 @@
-﻿<div class="position-relative">
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="4000">
-      <img src="~/img/impasto-pizza-professionale.jpg" class="d-block w-100" alt="Impasto">
-    </div>
-    <div class="carousel-item" data-bs-interval="4000">
-      <img src="~/img/basilico-su-pizza.jpg" class="d-block w-100" alt="Preparazione pizza">
-    </div>
-    <div class="carousel-item" data-bs-interval="4000">
-      <img src="~/img/pizza-forno-legna.jpg" class="d-block w-100" alt="Infornare">
-    </div>
-  </div>
-  <span class="text-white fs-1 position-absolute top-50 start-50 translate-middle" style="text-shadow: 5px 5px 7px black;"><em>Tutta un' altra pizza.</em></span>
-</div>
-</div>
-
-<!--Inizia api-->
-<div class="container">
+﻿<div class="container">
     <div class="row">
         <div class="col">
             <div class="d-flex justify-content-between align-items-center">
-                <h1 class="mt-3 mb-3">Le nostre pizze!</h1>
+                <h1 class="mt-3 mb-3">La lista delle tue pizze preferite:</h1>
             </div>
         </div>
     </div>
@@ -42,14 +24,6 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <a type="button" class="btn btn-danger" href="@Url.Action("Preferiti", "Home")">Vedi le tue pizze preferite ♥</a>
-        </div>
-    </div>
-</div>
-
 @section Scripts{
     <script type="text/javascript">
         console.log("Entrato nello script");
@@ -58,7 +32,7 @@
 
         function loadPizze()
         {
-            axios.get('/Api/Pizzas/Get').then((result) => 
+            axios.get('/Api/Favourites/Get').then((result) => 
             {
                 console.log("pizze ricevute");
 
@@ -83,7 +57,7 @@
                                 <p class="card-text fst-italic text-center">${pizza.ingredienti}</p>
                               </div>
                               <div class="card-footer">
-                                <button type="button" class="btn btn-outline-danger btn-preferiti" onclick="aggiungiAiPreferiti(${pizza.id})">Aggiungi ai preferiti ♥</button>
+                                <button type="button" class="btn btn-outline-dark btn-preferiti disabled" onclick="aggiungiAiPreferiti(${pizza.id})">Rimuovi pizza dai preferiti ♥</button>
                               </div>
                             </div>
                         </div>
@@ -94,6 +68,7 @@
                    console.log("C'è stato un errore")
             });
         }
+        //qua devo fare lo script per rimuovere
         function aggiungiAiPreferiti(idPizza)
         {            
             axios.post('/Api/Favourites/AggiungiPizza',
