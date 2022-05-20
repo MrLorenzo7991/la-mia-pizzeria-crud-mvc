@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria.Dati;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NuovaPizzeria.Models;
 
 namespace la_mia_pizzeria.Controllers.Api
@@ -20,7 +21,7 @@ namespace la_mia_pizzeria.Controllers.Api
                 }
                 else
                 {
-                    pizze = db.Pizze.ToList<Pizza>();
+                    pizze = db.Pizze.Include(pizza => pizza.Categoria).ToList<Pizza>();
                 }
             }
             return Ok(pizze);

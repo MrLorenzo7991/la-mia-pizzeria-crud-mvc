@@ -1,4 +1,5 @@
-﻿using NuovaPizzeria.Valitation;
+﻿using la_mia_pizzeria.Models;
+using NuovaPizzeria.Valitation;
 using System.ComponentModel.DataAnnotations;
 
 namespace NuovaPizzeria.Models
@@ -21,6 +22,10 @@ namespace NuovaPizzeria.Models
         public double Prezzo { get; set; }
         [Required(ErrorMessage = "Il campo è obbligatorio")]
         public string Ingredienti { get; set; }
+
+        public int? CategoriaId { get; set; }
+        public Categoria? Categoria { get; set; }
+
 
         public Pizza()
         {

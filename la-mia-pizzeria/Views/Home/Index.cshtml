@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="row text-center d-none" id="js_no_pizza">
+    <div class="row text-center d-none js_no_pizza">
         <div class="col-12 my-5">
             <h3>Non è presente nessuna pizza</h3>
         </div>
@@ -101,6 +101,14 @@
                     document.querySelector('.js_pizza_cards').classList.remove('d-none');
 
                     result.data.forEach(pizza => {
+                        let categoriaPizza = "Nessuna categoria assegnata";
+                        debugger;
+                        if(pizza.categoria != null)
+                        {
+                            categoriaPizza = pizza.categoria.nome;
+                            console.log("Ho cambiato la variabile")
+                        }
+
                         document.querySelector('.js_pizza_cards').innerHTML += 
                         `
                         <div class="col mb-2">
@@ -109,6 +117,7 @@
                               <div class="card-body">
                                 <p class="card-text"><span class="fs-5 fw-bold">${pizza.nome}</span><span class="fs-5 float-end">${pizza.prezzo}<!--.ToString(/*Vedere come fare*/)--> &euro;</span><br /><span class="text-center">${pizza.descrizione}</span></p>
                                 <p class="card-text fst-italic text-center">${pizza.ingredienti}</p>
+                                <p class="card-text fst-italic text-center">${categoriaPizza}</p>
                               </div>
                               <div class="card-footer">
                                 <button type="button" class="btn btn-outline-danger btn-preferiti" onclick="aggiungiAiPreferiti(${pizza.id})">Aggiungi ai preferiti ♥</button>
