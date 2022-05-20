@@ -25,7 +25,16 @@
                 <strong>Ingredienti:</strong>
                 @Model.Ingredienti
             </p>
-
+            <p>
+                <strong>Categoria:</strong>
+                @if(Model.Categoria != null){
+                    <span>@Model.Categoria.Nome</span>
+                }
+                else
+                {
+                    <span>Nessuna categoria associata</span>
+                }
+                </p>
         </div>
     </div>
 </div>

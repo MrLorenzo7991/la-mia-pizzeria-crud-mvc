@@ -26,7 +26,8 @@ namespace NuovaPizzeria.Controllers
                 try
                 {
                     Pizza pizzaTrovata = db.Pizze
-                         .Where(post => post.Id == id)
+                         .Where(pizza => pizza.Id == id)
+                         .Include(pizza => pizza.Categoria)
                          .First();
 
                     return View("DettagliPizza", pizzaTrovata);
@@ -88,21 +89,26 @@ namespace NuovaPizzeria.Controllers
         {
 
             Pizza? pizzaDaModificare = null;
+            List<Categoria> categorie = new List<Categoria>();
             using (PizzaContext db = new PizzaContext())
             {
                 pizzaDaModificare = db.Pizze
                          .Where(post => post.Id == id)
                          .FirstOrDefault();
+                categorie = db.Categorie.ToList();
             }
             if (pizzaDaModificare != null)
             {
-                return View("ModificaPizza", pizzaDaModificare);
+                PizzaCategorie model = new PizzaCategorie();
+                model.Pizza = pizzaDaModificare;
+                model.Categorie = categorie;
+                return View("ModificaPizza", model);
             }
             return NotFound();
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult ModificaPizza(int id, Pizza model)
+        public IActionResult ModificaPizza(int id, PizzaCategorie model)
         {
             if (!ModelState.IsValid)
             {
@@ -115,11 +121,12 @@ namespace NuovaPizzeria.Controllers
                          .FirstOrDefault();
             if(pizzaDaModificare != null)
             {
-                pizzaDaModificare.Nome = model.Nome;
-                pizzaDaModificare.UrlImmagine = model.UrlImmagine;
-                pizzaDaModificare.Prezzo = model.Prezzo;
-                pizzaDaModificare.Ingredienti = model.Ingredienti;
-                pizzaDaModificare.Descrizione = model.Descrizione;
+                pizzaDaModificare.Nome = model.Pizza.Nome;
+                pizzaDaModificare.UrlImmagine = model.Pizza.UrlImmagine;
+                pizzaDaModificare.Prezzo = model.Pizza.Prezzo;
+                pizzaDaModificare.Ingredienti = model.Pizza.Ingredienti;
+                pizzaDaModificare.Descrizione = model.Pizza.Descrizione;
+                pizzaDaModificare.CategoriaId = model.Pizza.CategoriaId;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
