@@ -1,4 +1,5 @@
 ﻿using la_mia_pizzeria.Dati;
+using la_mia_pizzeria.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuovaPizzeria.Models;
@@ -44,19 +45,38 @@ namespace NuovaPizzeria.Controllers
         [HttpGet]
         public IActionResult AggiungiPizza()
         {
-            return View("AggiungiPizza");
+            using (PizzaContext db = new PizzaContext()) 
+            {
+                List<Categoria> categorie = db.Categorie.ToList();
+
+                PizzaCategorie model = new PizzaCategorie();
+                model.Categorie = categorie;
+                model.Pizza = new Pizza();
+                
+                return View(model);
+            }
+
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult AggiungiPizza(Pizza nuovaPizza)
+        public IActionResult AggiungiPizza(PizzaCategorie nuovaPizza)
         {
             using (PizzaContext db = new PizzaContext())
             {
                 if (!ModelState.IsValid)
                 {
+                    List<Categoria> categorie = db.Categorie.ToList();
+                    nuovaPizza.Categorie = categorie;
                     return View("AggiungiPizza", nuovaPizza);
                 }
-                Pizza pizzaDaAggiungere = new Pizza(nuovaPizza.UrlImmagine, nuovaPizza.Nome, nuovaPizza.Descrizione, nuovaPizza.Ingredienti, nuovaPizza.Prezzo);
+                Pizza pizzaDaAggiungere = new Pizza();
+                pizzaDaAggiungere.Nome = nuovaPizza.Pizza.Nome;
+                pizzaDaAggiungere.UrlImmagine = nuovaPizza.Pizza.UrlImmagine;
+                pizzaDaAggiungere.Descrizione = nuovaPizza.Pizza.Descrizione;
+                pizzaDaAggiungere.Prezzo = nuovaPizza.Pizza.Prezzo;
+                pizzaDaAggiungere.Ingredienti = nuovaPizza.Pizza.Ingredienti;
+                pizzaDaAggiungere.CategoriaId = nuovaPizza.Pizza.CategoriaId;
+
                 db.Pizze.Add(pizzaDaAggiungere);
                 db.SaveChanges();
             }
