@@ -10,9 +10,9 @@ namespace la_mia_pizzeria.Controllers
     public class FavouritesController : ControllerBase
     {       
         [HttpPost]
-        public IActionResult AggiungiPizza([FromBody] Favourites data)
+        public IActionResult AggiungiPizza([FromBody] Favourites IdPizza)
         {
-            int id = data.IdPizza;
+            int id = IdPizza.IdPizza;
             PizzePreferite.idPizzePreferite.Add(id);
             return Ok();
         }

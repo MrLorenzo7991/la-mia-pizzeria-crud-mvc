@@ -1,4 +1,5 @@
-﻿<div class="position-relative">
+﻿<!--Carosello-->
+<div class="position-relative">
 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active" data-bs-interval="4000">
@@ -15,7 +16,12 @@
 </div>
 </div>
 
+
+
+
 <!--Inizia api-->
+
+
 <div class="container">
     <div class="row">
         <div class="col">
@@ -24,6 +30,13 @@
             </div>
         </div>
     </div>
+    <div class="col-12 my-3">
+            <form asp-controller="Pizzas" asp-action="Get" method="get">
+                <p>
+                    Ricerca: <input id="searchInput" type="text" name="SearchString" />
+                </p>
+            </form>
+        </div>
     <div class="row js_wait_pizza text-center my-5">
         <div class="col">
             <h3>Sto aspettando le pizze</h3>
@@ -32,8 +45,8 @@
             </div>
         </div>
     </div>
-    <div class="row js_no_pizza text-center d-none">
-        <div class="col-12">
+    <div class="row text-center d-none" id="js_no_pizza">
+        <div class="col-12 my-5">
             <h3>Non è presente nessuna pizza</h3>
         </div>
     </div>
@@ -54,14 +67,29 @@
     <script type="text/javascript">
         console.log("Entrato nello script");
         
-        loadPizze();
-
-        function loadPizze()
+        document.getElementById('searchInput').addEventListener('keyup', searchItems);
+        
+        searchItems();
+        
+        function searchItems()
         {
-            axios.get('/Api/Pizzas/Get').then((result) => 
+            let input = document.getElementById('searchInput').value;
+            loadPizze(input);
+        }
+
+
+        function loadPizze(ricerca)
+        {
+            document.querySelector('.js_pizza_cards').innerHTML = '';   //pulisco ogni volta
+
+            axios.get('/Api/Pizzas/Get', {
+                params :{
+                    searchString : ricerca
+                }
+            }).then((result) => 
             {
                 console.log("pizze ricevute");
-
+                
                 if(result.data.lenght == 0)
                 {
                     document.querySelector('.js_wait_pizza').classList.add('d-none');
